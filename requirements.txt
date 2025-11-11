@@ -1,0 +1,35 @@
+# Core framework
+Django>=4.2,<5.0
+
+# Database
+psycopg2-binary>=2.9.9     # For PostgreSQL (use this if your DB is Postgres)
+# or use this if you're using MySQL instead:
+# mysqlclient>=2.2.4
+
+# Email and template utilities
+django-crispy-forms>=2.0
+crispy-bootstrap5>=0.7
+
+# Environment management (optional but recommended)
+python-decouple>=3.8
+dj-database-url>=2.2.0
+
+# Timezone and date handling
+pytz>=2024.1
+tzdata>=2024.1
+
+# For handling images (used in Profile model via ImageField)
+Pillow>=10.3.0
+
+# For logging & debugging (optional but useful)
+django-debug-toolbar>=4.4.1
+
+# For form validation and better security (optional)
+django-widget-tweaks>=1.5.0
+
+# Email utilities (used for sending HTML emails)
+django-templated-mail>=1.1.1
+
+# Optional utilities
+whitenoise>=6.6.0          # For serving static files in production
+gunicorn>=22.0.0           # For deployment on servers like Heroku

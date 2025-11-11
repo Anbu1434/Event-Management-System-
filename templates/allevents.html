@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Events | CampusConnect</title>
+  <link rel="stylesheet" href="{% static 'css/hmain.css' %}">
+  <link rel="stylesheet" href="{% static 'css/responsive-navbar.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body>
+  <nav class="main-nav" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav-content">
+        <div class="logo animate__animated animate__fadeIn">
+          <img src="{% static 'images/logo.png' %}" alt="CampusConnect logo" loading="lazy">
+          <h1>CampusConnect</h1>
+        </div>
+        <div class="nav-links" id="navLinks" role="navigation">
+          <a href="{% url 'hmain' %}"><i class="fas fa-home"></i><span>Home</span></a>
+          <a href="{% url 'allevents' %}" class="active"><i class="fas fa-calendar-alt"></i><span>All Events</span></a>
+          <a href="{% url 'myevents' %}"><i class="fas fa-ticket-alt"></i><span>My Events</span></a>
+          <a href="{% url 'profile' %}"><i class="fas fa-user"></i><span>Profile</span></a>
+        </div>
+        <!-- Mobile Menu Toggle -->
+        <button class="nav-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="nav-actions" id="navActions">
+          <a href="{% url 'logout' %}" class="btn-logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero animate__animated animate__fadeIn">
+    <div class="container">
+      <div class="hero-content">
+        <h2>All Upcoming Events</h2>
+        <p>Browse and register for campus-wide events</p>
+        <form id="searchForm" class="search-form" role="search">
+          <input type="text" id="searchInput" placeholder="Search events..." aria-label="Search events">
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <main class="main-content">
+    <div class="container">
+      <section class="section animate__animated animate__fadeInUp">
+        {% if messages %}
+          <div class="messages">
+            {% for message in messages %}
+              <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% if events %}
+          <div class="events-grid" id="eventsGrid">
+            {% for event in events %}
+              <div class="event-card animate__animated animate__fadeInUp" data-title="{{ event.title }}">
+                {% if event.image %}
+                  <div class="event-image" style="background-image: url('{{ event.image.url }}');"></div>
+                {% else %}
+                  <div class="event-image"></div>
+                {% endif %}
+                <div class="event-details">
+                  <h4>{{ event.title }}</h4>
+                  <p><i class="fas fa-calendar-day"></i> {{ event.date }}</p>
+                  <p><i class="fas fa-map-marker-alt"></i> {{ event.location }}</p>
+                  <p>{{ event.description }}</p>
+                  <h6>{{ event.Event_type }}</h6>
+
+                  {% if user.is_authenticated %}
+                    {% if event.id in registered_event_ids %}
+                      <button class="btn-register registered" disabled aria-label="Already registered">✅ Registered</button>
+                    {% else %}
+                      {% if event.is_registration_open %}
+                        <a href="{% url 'register_event' event.id %}" class="btn-register" aria-label="Register for {{ event.title }}">Register Now</a>
+                      {% else %}
+                        <button class="btn-register disabled" disabled>Registration Closed</button>
+                      {% endif %}
+                    {% endif %}
+                  {% else %}
+                    <a href="{% url 'login' %}" class="btn-register">Log in to Register</a>
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-center">No upcoming events found.</p>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+          <div class="text-center mt-20">
+            <a href="{% url 'myevents' %}" class="btn-register">View My Events</a>
+          </div>
+        {% endif %}
+      </section>
+    </div>
+  </main>
+
+  <footer class="main-footer animate__animated animate__fadeIn">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="{% static 'images/logo.png' %}" alt="CampusConnect footer logo" loading="lazy">
+          <p>Your campus events platform</p>
+        </div>
+        <div class="footer-links">
+          <div class="link-group">
+            <h5>Explore</h5>
+            <a href="#">Events</a>
+            <a href="#">Clubs</a>
+          </div>
+          <div class="link-group">
+            <h5>Account</h5>
+            <a href="#">Profile</a>
+            <a href="#">Settings</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2023 CampusConnect</p>
+        <div class="social-links">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/hmain.js' %}"></script>
+  <script>
+    // Mobile menu toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const navLinks = document.getElementById('navLinks');
+      const navActions = document.getElementById('navActions');
+      
+      if (mobileMenuToggle) {
+        mobileMenuToggle.addEventListener('click', function() {
+          const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+          mobileMenuToggle.setAttribute('aria-expanded', !isExpanded);
+          navLinks.classList.toggle('active');
+          navActions.classList.toggle('active');
+          
+          // Toggle icon
+          const icon = mobileMenuToggle.querySelector('i');
+          icon.classList.toggle('fa-bars');
+          icon.classList.toggle('fa-times');
+        });
+      }
+      
+      // Close mobile menu when clicking on a link
+      if (navLinks) {
+        const navLinksElements = navLinks.querySelectorAll('a');
+        navLinksElements.forEach(link => {
+          link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            navActions.classList.remove('active');
+            if (mobileMenuToggle) {
+              mobileMenuToggle.setAttribute('aria-expanded', 'false');
+              const icon = mobileMenuToggle.querySelector('i');
+              icon.classList.add('fa-bars');
+              icon.classList.remove('fa-times');
+            }
+          });
+        });
+      }
+      
+      // Search functionality
+      const searchInput = document.getElementById('searchInput');
+      const eventCards = document.querySelectorAll('.event-card');
+      
+      if (searchInput) {
+        searchInput.addEventListener('input', function() {
+          const searchTerm = this.value.toLowerCase();
+          
+          eventCards.forEach(card => {
+            const title = card.getAttribute('data-title').toLowerCase();
+            const description = card.querySelector('.event-details p').textContent.toLowerCase();
+            
+            if (title.includes(searchTerm) || description.includes(searchTerm)) {
+              card.style.display = 'block';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

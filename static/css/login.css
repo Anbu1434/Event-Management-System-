@@ -1,0 +1,275 @@
+/* Login Page Styles */
+:root {
+    --primary-color: #4a6fa5;
+    --secondary-color: #166088;
+    --accent-color: #4fc3f7;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --error-color: #e74c3c;
+    --success-color: #2ecc71;
+    --border-radius: 8px; /* Added for consistency */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Changed font to Poppins for a modern look */
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    /* Subtle gradient background for a modern feel */
+    background: linear-gradient(135deg, #f5f5f5, #e0e0e0); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: var(--dark-color);
+}
+
+.login-container {
+    background-color: white;
+    border-radius: var(--border-radius);
+    /* Softer, more diffused shadow */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); 
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    position: relative; /* For potential future animations/elements */
+    overflow: hidden; /* Ensures shadows or elements don't spill */
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-logo {
+    height: 70px; /* Slightly larger logo */
+    margin-bottom: 20px;
+    transition: transform 0.3s ease; /* Smooth hover effect */
+}
+
+.login-logo:hover {
+    transform: scale(1.05);
+}
+
+.login-header h1 {
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+    font-size: 28px; /* Slightly larger heading */
+    font-weight: 600; /* Bolder for emphasis */
+}
+
+.login-header p {
+    color: #666;
+    font-size: 15px; /* Slightly larger paragraph text */
+    line-height: 1.5;
+}
+
+.login-form .form-group {
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark-color);
+    font-size: 14px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius); /* Use variable for consistency */
+    font-size: 15px; /* Consistent font size */
+    transition: all 0.3s ease; /* Smooth transition for focus */
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.2); /* Soft glow on focus */
+}
+
+.forgot-password {
+    display: block;
+    text-align: right;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: var(--secondary-color); /* Darker on hover */
+    text-decoration: underline;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px; /* Spacing below remember me */
+}
+
+.remember-me input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+    accent-color: var(--primary-color); /* Styles the checkbox itself */
+}
+
+.login-btn {
+    width: 100%;
+    padding: 14px; /* Slightly more padding for a better touch target */
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 17px; /* Larger font for button text */
+    font-weight: 600; /* Bolder button text */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform for press effect */
+    margin-top: 10px;
+    letter-spacing: 0.5px; /* Slight letter spacing */
+}
+
+.login-btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.login-btn:active {
+    transform: translateY(0); /* "Press" effect */
+}
+
+.login-divider {
+    display: flex;
+    align-items: center;
+    margin: 30px 0; /* More vertical space */
+    color: #999;
+    font-size: 14px;
+    text-transform: uppercase; /* Uppercase for a subtle design touch */
+    letter-spacing: 1px;
+}
+
+.login-divider::before,
+.login-divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #eee; /* Lighter divider line */
+}
+
+.login-divider::before {
+    margin-right: 15px; /* Increased margin */
+}
+
+.login-divider::after {
+    margin-left: 15px; /* Increased margin */
+}
+
+.social-login {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Slightly more space between social buttons */
+    margin-bottom: 25px; /* More space below social buttons */
+}
+
+.social-btn {
+    padding: 12px;
+    border: 1px solid #e0e0e0; /* Lighter border */
+    border-radius: var(--border-radius);
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03); /* Subtle shadow for buttons */
+}
+
+.social-btn:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-1px); /* Slight lift on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.social-btn.facebook {
+    color: #3b5998;
+}
+
+.social-btn.google {
+    color: #db4437;
+}
+
+.register-link {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-top: 20px;
+}
+
+.register-link a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600; /* Bolder link text */
+    transition: color 0.3s ease;
+}
+
+.register-link a:hover {
+    color: var(--secondary-color); /* Darker on hover */
+    text-decoration: underline;
+}
+
+/* Alert Messages (No changes as they are functional) */
+.alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert-error {
+    background-color: var(--error-color);
+}
+
+.alert-success {
+    background-color: var(--success-color);
+}
+
+/* Responsive Styles (Original good, slight adjustments) */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 30px 20px;
+        margin: 20px; /* Add some margin on smaller screens */
+    }
+    
+    .login-header h1 {
+        font-size: 24px; /* Adjust heading size */
+    }
+
+    .login-btn {
+        font-size: 16px;
+    }
+
+    .social-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+}

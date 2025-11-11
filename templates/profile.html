@@ -1,0 +1,255 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Profile | CampusConnect</title>
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+  <link rel="stylesheet" href="{% static 'css/responsive-navbar.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="main-nav" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav-content">
+        <div class="logo animate__animated animate__fadeIn">
+          <img src="{% static 'images/logo.png' %}" alt="CampusConnect logo" loading="lazy">
+          <h1>CampusConnect</h1>
+        </div>
+        <!-- Mobile Menu Toggle -->
+        <button class="nav-toggle" id="mobileMenuToggle" aria-label="Toggle navigation" aria-expanded="false">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="nav-links" id="navLinks">
+          <a href="{% url 'hmain' %}"><i class="fas fa-home"></i><span>Home</span></a>
+          <a href="{% url 'allevents' %}"><i class="fas fa-calendar-alt"></i><span>All Events</span></a>
+          <a href="{% url 'myevents' %}"><i class="fas fa-ticket-alt"></i><span>My Events</span></a>
+          <a href="{% url 'profile' %}" class="active"><i class="fas fa-user"></i><span>Profile</span></a>
+        </div>
+        
+        <div class="nav-actions" id="navActions">
+          <a href="{% url 'logout' %}" class="btn-logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- Page Header -->
+  <section class="hero animate__animated animate__fadeIn">
+    <div class="container">
+      <div class="hero-content">
+        <h2>My Profile</h2>
+        <p>Manage your account details and preferences</p>
+      </div>
+    </div>
+  </section>
+  <!-- Profile Section -->
+  <main class="main-content">
+    <div class="container">
+      <section class="section animate__animated animate__fadeInUp">
+        <!-- Display Success/Error Messages -->
+        {% if messages %}
+          <div class="messages">
+            {% for message in messages %}
+              <p class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <div class="profile-card">
+          <div class="profile-header">
+            {% if profile.profile_picture %}
+              <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="profile-picture" loading="lazy">
+            {% else %}
+              <div class="profile-placeholder"><i class="fas fa-user-circle"></i></div>
+            {% endif %}
+            <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+            <p>{{ user.email }}</p>
+          </div>
+          <div class="profile-details" id="profileDetails">
+            <h4>Personal Information</h4>
+            <p><i class="fas fa-university"></i> University: {{ profile.university|default:"Not set" }}</p>
+            <p><i class="fas fa-id-card"></i> Student ID: {{ profile.student_id|default:"Not set" }}</p>
+            {% if profile.phone_number %}
+              <p><i class="fas fa-phone"></i> Phone: {{ profile.phone_number }}</p>
+            {% endif %}
+            {% if profile.date_of_birth %}
+              <p><i class="fas fa-birthday-cake"></i> Date of Birth: {{ profile.date_of_birth }}</p>
+            {% endif %}
+            {% if profile.bio %}
+              <p><i class="fas fa-info-circle"></i> Bio: {{ profile.bio }}</p>
+            {% endif %}
+            <button class="edit-btn" id="editProfileBtn" type="button">
+               Edit Profile
+            </button>
+          </div>
+          
+          <!-- Edit Profile Form -->
+          <form id="editProfileForm" class="profile-form" method="POST" enctype="multipart/form-data" style="display: none;">
+            {% csrf_token %}
+            
+            <div class="form-section">
+              <h4>Basic Information</h4>
+              <div class="form-row">
+                <div class="form-group">
+                  {{ user_form.first_name.label_tag }}
+                  {{ user_form.first_name }}
+                  {% if user_form.first_name.errors %}
+                    <span class="error">{{ user_form.first_name.errors }}</span>
+                  {% endif %}
+                </div>
+                <div class="form-group">
+                  {{ user_form.last_name.label_tag }}
+                  {{ user_form.last_name }}
+                  {% if user_form.last_name.errors %}
+                    <span class="error">{{ user_form.last_name.errors }}</span>
+                  {% endif %}
+                </div>
+              </div>
+              
+              <div class="form-group">
+                {{ user_form.email.label_tag }}
+                {{ user_form.email }}
+                {% if user_form.email.errors %}
+                  <span class="error">{{ user_form.email.errors }}</span>
+                {% endif %}
+              </div>
+            </div>
+            
+            <div class="form-section">
+              <h4>Profile Information</h4>
+              <div class="form-group">
+                {{ profile_form.profile_picture.label_tag }}
+                {{ profile_form.profile_picture }}
+                {% if profile_form.profile_picture.errors %}
+                  <span class="error">{{ profile_form.profile_picture.errors }}</span>
+                {% endif %}
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  {{ profile_form.university.label_tag }}
+                  {{ profile_form.university }}
+                  {% if profile_form.university.errors %}
+                    <span class="error">{{ profile_form.university.errors }}</span>
+                  {% endif %}
+                </div>
+                <div class="form-group">
+                  {{ profile_form.student_id.label_tag }}
+                  {{ profile_form.student_id }}
+                  {% if profile_form.student_id.errors %}
+                    <span class="error">{{ profile_form.student_id.errors }}</span>
+                  {% endif %}
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  {{ profile_form.phone_number.label_tag }}
+                  {{ profile_form.phone_number }}
+                  {% if profile_form.phone_number.errors %}
+                    <span class="error">{{ profile_form.phone_number.errors }}</span>
+                  {% endif %}
+                </div>
+                <div class="form-group">
+                  {{ profile_form.date_of_birth.label_tag }}
+                  {{ profile_form.date_of_birth }}
+                  {% if profile_form.date_of_birth.errors %}
+                    <span class="error">{{ profile_form.date_of_birth.errors }}</span>
+                  {% endif %}
+                </div>
+              </div>
+              
+              <div class="form-group">
+                {{ profile_form.bio.label_tag }}
+                {{ profile_form.bio }}
+                {% if profile_form.bio.errors %}
+                  <span class="error">{{ profile_form.bio.errors }}</span>
+                {% endif %}
+              </div>
+            </div>
+            
+            <div class="form-actions">
+              <button type="submit" class="btn btn-save">
+                <i class="fas fa-save"></i> Save Changes
+              </button>
+              <button type="button" class="btn btn-cancel" id="cancelEditBtn">
+                <i class="fas fa-times"></i> Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </main>
+  <!-- Footer -->
+  <footer class="main-footer animate__animated animate__fadeIn">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="{% static 'images/logo.png' %}" alt="CampusConnect footer logo" loading="lazy">
+          <p>Your campus events platform</p>
+        </div>
+        <div class="footer-links">
+          <div class="link-group">
+            <h5>Explore</h5>
+            <a href="{% url 'allevents' %}">Events</a>
+            <a href="">Clubs</a>
+          </div>
+          <div class="link-group">
+            <h5>Account</h5>
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="">Settings</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© {% now "Y" %} CampusConnect</p>
+        <div class="social-links">
+          <a href="https://facebook.com" aria-label="Visit our Facebook page"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://instagram.com" aria-label="Visit our Instagram page"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- JS -->
+  <script src="{% static 'js/profile.js' %}"></script>
+  <script>
+    // Additional mobile menu toggle functionality for profile page
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const navLinks = document.getElementById('navLinks');
+      const navActions = document.getElementById('navActions');
+      
+      if (mobileMenuToggle && navLinks && navActions) {
+        mobileMenuToggle.addEventListener('click', function() {
+          const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+          mobileMenuToggle.setAttribute('aria-expanded', !isExpanded);
+          navLinks.classList.toggle('active');
+          navActions.classList.toggle('active');
+          
+          // Toggle icon
+          const icon = mobileMenuToggle.querySelector('i');
+          icon.classList.toggle('fa-bars');
+          icon.classList.toggle('fa-times');
+        });
+        
+        // Close mobile menu when clicking on a link
+        const navLinksElements = navLinks.querySelectorAll('a');
+        navLinksElements.forEach(link => {
+          link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            navActions.classList.remove('active');
+            mobileMenuToggle.setAttribute('aria-expanded', 'false');
+            const icon = mobileMenuToggle.querySelector('i');
+            icon.classList.add('fa-bars');
+            icon.classList.remove('fa-times');
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusConnect - College Event Booking</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-calendar-check"></i>
+                <span>CampusConnect</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#testimonial">Testimonials</a>
+                <button class="btn btn-outline" id="loginBtn"><a href="{% url 'login' %}" style="color: aliceblue;">Login</a></button>
+                <button class="btn" id="registerBtn"><a href="{% url 'register' %}">Register</a></button>
+            </div>
+            <button class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Welcome to CampusConnect</h1>
+                <p>Reserve venues, track attendance, and streamline events—effortlessly.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="heroRegister">Get Started for Free</button>
+                    <button class="btn btn-outline" id="heroLogin">Login</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="{% static 'images/event.png' %}" alt="College event planning">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2>Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>Venue Booking</h3>
+                    <p>Instantly reserve auditoriums, labs, or outdoor spaces with real-time availability.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Event Calendar</h3>
+                    <p>Sync with academic schedules and avoid conflicts across departments.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <h3>Ticketing</h3>
+                    <p>Sell or distribute free tickets with QR codes for easy check-in.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <section class="testimonial" id="testimonial">
+        <div class="container">
+            <div class="testimonial-content">
+                <i class="fas fa-quote-left"></i>
+                <p>CampusConnect cut our event planning time by 50%! The seamless integration with our academic calendar has been a game-changer for our university.</p>
+                <div class="testimonial-author">
+                    <span class="name">Sarah Johnson</span>
+                    <span class="role">Event Coordinator, State University</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Browse Available Venues</h3>
+                    <p>Search by location, capacity, or amenities to find your perfect event space.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Book With One Click</h3>
+                    <p>Instant confirmation with automated approvals based on your permissions.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Share Event Links</h3>
+                    <p>Promote your event and manage attendance through customizable links.</p>
+                </div>
+            </div>
+            <div class="how-it-works-image">
+                <img src="https://illustrations.popsy.co/amber/academic-professor.svg" alt="How CampusConnect works">
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Transform Your Campus Events?</h2>
+            <p>Join hundreds of universities streamlining their event management today.</p>
+            <button class="btn btn-primary" id="ctaRegister">Get Started for Free</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>CampusConnect</span>
+                    </div>
+                    <p>Simplifying college event management for administrators and students alike.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Connect With Us</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 CampusConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
