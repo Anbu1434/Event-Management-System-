@@ -16,6 +16,10 @@ from django.utils.html import strip_tags
 from django.conf import settings
 from django.template import TemplateDoesNotExist
 import logging
+import qrcode
+import json
+from io import BytesIO
+from django.core.files.base import ContentFile
 
 logger = logging.getLogger(__name__)
 def home(request):
@@ -195,69 +199,93 @@ def myevents(request):
     }
     return render(request, 'myevents.html', context)
 
+
 @login_required(login_url='login')
 def register_for_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
-    
-    # Check if registration is still open
+
     if not event.is_registration_open:
         messages.error(request, 'Registration for this event is closed.')
         return redirect('allevents')
-    
-    # Check if user is already registered
+
     if EventRegistration.objects.filter(user=request.user, event=event).exists():
         messages.warning(request, 'You are already registered for this event.')
         return redirect('allevents')
-    
-    # Check if event is full
+
     if event.registered_count >= event.max_participants:
         messages.error(request, 'This event is full.')
         return redirect('allevents')
-    
-    # Register the user
-    EventRegistration.objects.create(user=request.user, event=event)
-    
-    # Prepare email
-    subject = f'Registration Confirmation for {event.title}'
-    context = {
-        'user': request.user,
-        'event': event,
+
+    registration = EventRegistration.objects.create(
+        user=request.user,
+        event=event
+    )
+
+    # -----------------------------
+    # QR CODE GENERATION
+    # -----------------------------
+    qr_payload = {
+        "username": request.user.username,
+        "event": event.title,
+        "date": event.date.strftime("%Y-%m-%d"),
+        "time": event.time.strftime("%I:%M %p"),
     }
-    
-    # Validate user email
-    if not request.user.email:
-        logger.warning(f"User {request.user.username} has no email address.")
-        messages.warning(request, 'Registration successful, but no email address is associated with your account.')
-    else:
+
+    qr_data = json.dumps(qr_payload)
+
+    qr = qrcode.make(qr_data)
+    qr_buffer = BytesIO()
+    qr.save(qr_buffer, format="PNG")
+    qr_buffer.seek(0)
+
+    # -----------------------------
+    # EMAIL PREPARATION
+    # -----------------------------
+    subject = f"Registration Confirmation – {event.title}"
+    context = {
+        "user": request.user,
+        "event": event,
+    }
+
+    if request.user.email:
         try:
-            # Render HTML email template
-            html_content = render_to_string('email.html', context)
+            html_content = render_to_string("email.html", context)
             text_content = strip_tags(html_content)
-            
-            # Log email details for debugging
-            logger.debug(f"Sending email to: {request.user.email}, Subject: {subject}, From: {settings.DEFAULT_FROM_EMAIL}")
-            
-            # Create email
+
             email = EmailMultiAlternatives(
                 subject=subject,
                 body=text_content,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 to=[request.user.email],
             )
+
             email.attach_alternative(html_content, "text/html")
-            
-            # Send email
+
+            # Attach QR Code
+            email.attach(
+                filename="event_qr_code.png",
+                content=qr_buffer.getvalue(),
+                mimetype="image/png",
+            )
+
             email.send()
-            logger.info(f"Email sent successfully to {request.user.email}")
-        except TemplateDoesNotExist as e:
-            logger.error(f"Email template error: {str(e)}")
-            messages.warning(request, f'Registration successful, but failed to send confirmation email: Email template not found.')
+            logger.info(f"QR email sent to {request.user.email}")
+
         except Exception as e:
-            logger.error(f"Email sending failed: {str(e)}", exc_info=True)
-            messages.warning(request, f'Registration successful, but failed to send confirmation email: {str(e)}')
-    
-    messages.success(request, f'Successfully registered for {event.title}!')
-    return redirect('allevents')
+            logger.error(f"Email failed: {e}", exc_info=True)
+            messages.warning(
+                request,
+                "Registered successfully, but email delivery failed."
+            )
+    else:
+        messages.warning(
+            request,
+            "Registered successfully, but no email is linked to your account."
+        )
+
+    messages.success(request, f"Successfully registered for {event.title}!")
+    return redirect("allevents")
+
 
 @login_required(login_url='login')
 def unregister_from_event(request, event_id):
