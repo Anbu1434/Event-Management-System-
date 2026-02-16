@@ -1,14 +1,16 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | CampusConnect</title>
+    <meta name="description" content="Login to your CampusConnect account to manage events, venues, and more.">
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-header">
@@ -16,39 +18,39 @@
             <h1>Welcome Back!</h1>
             <p>Login to access your CampusConnect account</p>
         </div>
-        
+
         <form class="login-form" id="loginForm" action="{% url 'login' %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" placeholder="Enter your email" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" required>
                 <a href="forgot-password.html" class="forgot-password">Forgot password?</a>
                 {% if messages %}
-         {% for message in messages %}
-        <div class="alert">
-           <h7 class="alert-error">{{ message }}</h7> 
-        </div>
-    {% endfor %}
-{% endif %}
+                {% for message in messages %}
+                <div class="alert">
+                    <h7 class="alert-error">{{ message }}</h7>
+                </div>
+                {% endfor %}
+                {% endif %}
 
             </div>
-            
+
             <div class="form-group remember-me">
                 <input type="checkbox" id="remember">
                 <label for="remember">Remember me</label>
             </div>
-            
+
             <button type="submit" class="login-btn">Login</button>
-            
+
             <div class="login-divider">
                 <span>or continue with</span>
             </div>
-            
+
             <div class="social-login">
                 <button type="button" class="social-btn facebook">
                     <i class="fab fa-facebook-f"></i> Facebook
@@ -57,7 +59,7 @@
                     <i class="fab fa-google"></i> Google
                 </button>
             </div>
-            
+
             <div class="register-link">
                 Don't have an account? <a href="{% url 'register' %}">Register</a>
             </div>
@@ -66,4 +68,5 @@
 
     <script src="{% static 'js/login.js' %}"></script>
 </body>
+
 </html>

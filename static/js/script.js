@@ -1,74 +1,62 @@
 // script.js
 
 document.addEventListener("DOMContentLoaded", function () {
-    const loginBtn = document.getElementById("loginBtn");
-    const registerBtn = document.getElementById("registerBtn");
-    const heroLogin = document.getElementById("heroLogin");
-    const heroRegister = document.getElementById("heroRegister");
-    const ctaRegister = document.getElementById("ctaRegister");
-
-    const loginModal = document.getElementById("loginModal");
-    const registerModal = document.getElementById("registerModal");
-
-    const showRegisterLink = document.getElementById("showRegister");
-    const showLoginLink = document.getElementById("showLogin");
-
-    const closeButtons = document.querySelectorAll(".close");
-
     const hamburger = document.getElementById("hamburger");
     const navLinks = document.querySelector(".nav-links");
 
     // Toggle navbar for mobile
-    hamburger.addEventListener("click", () => {
-        navLinks.classList.toggle("active");
-    });
-
-    // Open login modal
-    [loginBtn, heroLogin].forEach(button => {
-        button.addEventListener("click", () => {
-            loginModal.classList.add("show");
-        });
-    });
-
-    // Open register modal
-    [registerBtn, heroRegister, ctaRegister].forEach(button => {
-        button.addEventListener("click", () => {
-            registerModal.classList.add("show");
-        });
-    });
-
-    // Switch from login to register
-    if (showRegisterLink) {
-        showRegisterLink.addEventListener("click", (e) => {
-            e.preventDefault();
-            loginModal.classList.remove("show");
-            registerModal.classList.add("show");
+    if (hamburger) {
+        hamburger.addEventListener("click", () => {
+            navLinks.classList.toggle("active");
+            // Toggle icon
+            const icon = hamburger.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            }
         });
     }
 
-    // Switch from register to login
-    if (showLoginLink) {
-        showLoginLink.addEventListener("click", (e) => {
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            registerModal.classList.remove("show");
-            loginModal.classList.add("show");
-        });
-    }
-
-    // Close modals
-    closeButtons.forEach(closeBtn => {
-        closeBtn.addEventListener("click", () => {
-            loginModal.classList.remove("show");
-            registerModal.classList.remove("show");
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Close mobile menu if open
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    const icon = hamburger.querySelector('i');
+                    if (icon) {
+                        icon.classList.add('fa-bars');
+                        icon.classList.remove('fa-times');
+                    }
+                }
+            }
         });
     });
 
-    // Close modal if clicked outside content
-    window.addEventListener("click", (event) => {
-        if (event.target === loginModal) {
-            loginModal.classList.remove("show");
-        } else if (event.target === registerModal) {
-            registerModal.classList.remove("show");
-        }
-    });
+    // Reveal animations on scroll
+    const revealElements = document.querySelectorAll('.feature-card, .step, .testimonial-content');
+
+    const revealOnScroll = () => {
+        const windowHeight = window.innerHeight;
+        const elementVisible = 150;
+
+        revealElements.forEach((element) => {
+            const elementTop = element.getBoundingClientRect().top;
+            if (elementTop < windowHeight - elementVisible) {
+                element.classList.add('active');
+                element.style.opacity = "1";
+                element.style.transform = "translateY(0)";
+            }
+        });
+    };
+
+    window.addEventListener('scroll', revealOnScroll);
+    // Trigger once on load
+    revealOnScroll();
 });

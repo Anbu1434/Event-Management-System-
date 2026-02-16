@@ -1,29 +1,33 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusConnect - College Event Booking</title>
+    <meta name="description"
+        content="Reserve venues, track attendance, and streamline college events effortlessly with CampusConnect.">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" id="mainNavbar">
         <div class="container">
             <div class="logo">
                 <i class="fas fa-calendar-check"></i>
                 <span>CampusConnect</span>
             </div>
-            <div class="nav-links">
+            <div class="nav-links" id="navLinks">
                 <a href="#features">Features</a>
                 <a href="#how-it-works">How It Works</a>
                 <a href="#testimonial">Testimonials</a>
-                <button class="btn btn-outline" id="loginBtn"><a href="{% url 'login' %}" style="color: aliceblue;">Login</a></button>
-                <button class="btn" id="registerBtn"><a href="{% url 'register' %}">Register</a></button>
+                <a href="{% url 'login' %}" class="btn btn-outline" id="loginBtn">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-primary" id="registerBtn">Register</a>
             </div>
-            <button class="hamburger" id="hamburger">
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -35,8 +39,8 @@
                 <h1>Welcome to CampusConnect</h1>
                 <p>Reserve venues, track attendance, and streamline events—effortlessly.</p>
                 <div class="hero-buttons">
-                    <button class="btn btn-primary" id="heroRegister">Get Started for Free</button>
-                    <button class="btn btn-outline" id="heroLogin">Login</button>
+                    <a href="{% url 'register' %}" class="btn btn-primary" id="heroRegister">Get Started for Free</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline" id="heroLogin">Login</a>
                 </div>
             </div>
             <div class="hero-image">
@@ -80,7 +84,8 @@
         <div class="container">
             <div class="testimonial-content">
                 <i class="fas fa-quote-left"></i>
-                <p>CampusConnect cut our event planning time by 50%! The seamless integration with our academic calendar has been a game-changer for our university.</p>
+                <p>CampusConnect cut our event planning time by 50%! The seamless integration with our academic calendar
+                    has been a game-changer for our university.</p>
                 <div class="testimonial-author">
                     <span class="name">Sarah Johnson</span>
                     <span class="role">Event Coordinator, State University</span>
@@ -121,7 +126,7 @@
         <div class="container">
             <h2>Ready to Transform Your Campus Events?</h2>
             <p>Join hundreds of universities streamlining their event management today.</p>
-            <button class="btn btn-primary" id="ctaRegister">Get Started for Free</button>
+            <a href="{% url 'register' %}" class="btn btn-primary" id="ctaRegister">Get Started for Free</a>
         </div>
     </section>
 
@@ -155,19 +160,20 @@
                 <div class="footer-social">
                     <h4>Connect With Us</h4>
                     <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2023 CampusConnect. All rights reserved.</p>
+                <p>&copy; 2026 CampusConnect. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="{% static 'js/script.js' %}"></script>
 </body>
+
 </html>
