@@ -23,7 +23,6 @@ An **Event Management System** built using **Django** and **SQLite** that allows
 - HTML5  
 - CSS3  
 - JavaScript  
-- Bootstrap  
 
 **Backend:**
 - Django (Python Framework)  
